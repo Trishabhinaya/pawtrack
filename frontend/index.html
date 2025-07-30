@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Paw Track</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+    <button id="hamburger" onclick="toggleSideNav()">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+    <nav id="sideNav">
+        <button id="closeSideNav" onclick="toggleSideNav()">✖</button>
+        <button onclick="showPage('introPage')">HOME</button>
+        <button onclick="showPage('adoptSection'); showAdoptPage(1);">FIND A PET</button>
+        <button onclick="showPage('petsSection')">PETS</button>
+        <button onclick="showPage('trackSection'); switchTrackTab('trackForm');">TRACK</button>
+        <button onclick="showPage('profileSection')">PROFILE</button>
+        <button id="navLoginButton" onclick="showPage('loginSection')">LOGIN</button>
+    </nav>
+
+    <div id="overlay" onclick="toggleSideNav()"></div>
+
+    <section class="intro active" id="introPage">
+        <h1>Welcome to Paw Track</h1>
+        <p>Paw Track is a comprehensive digital platform created to track, monitor, and help stray dogs. With a focus on animal welfare and smart technology, Paw Track serves as a centralized system for recording the details of abandoned, rescued, or missing dogs and enabling their adoption or recovery.</p>
+        <img src="https://www.vidavetcare.com/wp-content/uploads/sites/234/2022/04/golden-retriever-dog-breed-info.jpeg" alt="Cute Golden Retriever Dog" class="dog-img" />
+        <button class="paw-button" onclick="showPage('loginSection')" style="color: white;">🐾</button>
+    </section>
+
+    <section class="login-section" id="loginSection">
+        <div class="login-container">
+            <h2>Login / Sign Up</h2>
+            <div class="tabs">
+                <div class="tab active" onclick="switchTab('login')">Login</div>
+                <div class="tab" onclick="switchTab('signup')">Sign Up</div>
+            </div>
+
+            <form id="loginForm" class="active">
+                <input type="email" placeholder="Email" required />
+                <input type="password" placeholder="Password" required />
+                <button type="submit">Login</button>
+            </form>
+
+            <form id="signupForm">
+                <input type="text" placeholder="Full Name" required />
+                <input type="email" placeholder="Email" required />
+                <input type="password" placeholder="Password" required />
+                <button type="submit">Sign Up</button>
+            </form>
+        </div>
+    </section>
+
+    <section class="dashboard" id="dashboard">
+        <button class="back-btn" onclick="showPage('loginSection')">← Back</button>
+        <h1>Welcome to Paw Track</h1>
+        <div class="options">
+            <div class="card">
+                <h2>🐶 Adopt Me</h2>
+                <p>Meet lovely stray pets waiting for a second chance. 💕</p>
+                <button onclick="showPage('adoptSection'); showAdoptPage(1);">Explore</button>
+            </div>
+            <div class="card">
+                <h2>📍 Track Me</h2>
+                <p>Help us track missing pets across India. 🐾</p>
+                <button onclick="showPage('trackSection'); switchTrackTab('trackForm');">Track Now</button>
+            </div>
+            </div>
+    </section>
+
+    <section class="adopt-section" id="adoptSection">
+        <header>
+            <button class="back-btn" onclick="showPage('dashboard')">← Back</button>
+            <h2>Adopt A Paw 🐾</h2>
+            <div></div>
+        </header>
+
+        <div class="page active" id="adoptPage1">
+            <div class="pets-container">
+                <div class="pet-card">
+                    <img src="https://www.aljazeera.com/wp-content/uploads/2022/09/000_32HB9XR.jpg?resize=1170%2C780&quality=80" alt="Brownie">
+                    <h3>Brownie</h3>
+                    <p><strong>Age:</strong> 3 Years</p>
+                    <p><strong>Location:</strong> Gachibowli, Hyderabad</p>
+                    <p><strong>Reason:</strong> Abandoned after shifting flats</p>
+                    <button onclick="showAdoptionRequestForm('Brownie')">Adopt Me</button>
+                </div>
+                <div class="pet-card">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTusLhp9Er7eT-GZ7R0onD3yN8UI5mmdSsCGA&s" alt="Whiskers">
+                    <h3>Whiskers</h3>
+                    <p><strong>Age:</strong> 2 Years</p>
+                    <p><strong>Location:</strong> Vijayawada Station</p>
+                    <p><strong>Reason:</strong> Owner moved abroad</p>
+                    <button onclick="showAdoptionRequestForm('Whiskers')">Adopt Me</button>
+                </div>
+                <div class="pet-card">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0RuyfWSZD5YD90QkjJ9TpwUWirTOcCtkCZw&s" alt="Sheru">
+                    <h3>Sheru</h3>
+                    <p><strong>Age:</strong> 4 Years</p>
+                    <p><strong>Location:</strong> RTC X Road, Hyderabad</p>
+                    <p><strong>Reason:</strong> Hit by car, rescued, left again</p>
+                    <button onclick="showAdoptionRequestForm('Sheru')">Adopt Me</button>
+                </div>
+                <div class="pet-card">
+                    <img src="https://www.thetimes.com/imageserver/image/%2Fmethode%2Ftimes%2Fprod%2Fweb%2Fbin%2F06d0ce61-7de3-4e8f-a82f-fbd396fe27ef.jpg?crop=1317%2C740%2C1936%2C1388&resize=360" alt="Rani">
+                    <h3>Rani</h3>
+                    <p><strong>Age:</strong> 2.5 Years</p>
+                    <p><strong>Location:</strong> KPHB, Hyderabad</p>
+                    <p><strong>Reason:</strong> Stray mother left behind</p>
+                    <button onclick="showAdoptionRequestForm('Rani')">Adopt Me</button>
+                </div>
+            </div>
+            <div class="nav-buttons">
+                <button onclick="showAdoptPage(2)">Next →</button>
+            </div>
+        </div>
+
+        <div class="page" id="adoptPage2">
+            <div class="pets-container">
+                <div class="pet-card">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSdN5Q9p_UKsYDCgFAj-UM-NId_pk8Ewa1XA&s" alt="Moti">
+                    <h3>Moti</h3>
+                    <p><strong>Age:</strong> 3 Years</p>
+                    <p><strong>Location:</strong> Jayanagar, Bangalore</p>
+                    <p><strong>Reason:</strong> Beaten and left by family</p>
+                    <button onclick="showAdoptionRequestForm('Moti')">Adopt Me</button>
+                </div>
+                <div class="pet-card">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyAjUx3lueZ1cUMdgfJ_xDowqOxeJ2vDe6-A&s" alt="Kittu">
+                    <h3>Kittu</h3>
+                    <p><strong>Age:</strong> 4 Years</p>
+                    <p><strong>Location:</strong> Nampally, Hyderabad</p>
+                    <p><strong>Reason:</strong> Collar removed and abandoned</p>
+                    <button onclick="showAdoptionRequestForm('Kittu')">Adopt Me</button>
+                </div>
+                <div class="pet-card">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGqtKnKiSct2S4M_I4PMdXO5K0KPY_gMvnvizAzEh3svxmfBumhEEaSEJh5d0mMtAuUuo&usqp=CAU" alt="Simba">
+                    <h3>Simba</h3>
+                    <p><strong>Age:</strong> 1.5 Years</p>
+                    <p><strong>Location:</strong> Charminar, Hyderabad</p>
+                    <p><strong>Reason:</strong> Found under vehicle after accident</p>
+                    <button onclick="showAdoptionRequestForm('Simba')">Adopt Me</button>
+                </div>
+                <div class="pet-card">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSV6ItiyUhes69wtNRBmNAH4LVrtuQQ9X2Q8A&s" alt="Tiger">
+                    <h3>Tiger</h3>
+                    <p><strong>Age:</strong> 5 Years</p>
+                    <p><strong>Location:</strong> Mehdipatnam, Hyderabad</p>
+                    <p><strong>Reason:</strong> Guard dog abandoned after illness</p>
+                    <button onclick="showAdoptionRequestForm('Tiger')">Adopt Me</button>
+                </div>
+            </div>
+            <div class="nav-buttons">
+                <button onclick="showAdoptPage(1)">← Back</button>
+                <button onclick="showAdoptPage(3)">Next →</button>
+            </div>
+        </div>
+
+        <div class="page" id="adoptPage3">
+            <div class="pets-container">
+                <div class="pet-card">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZjoTLc15csU9iqCQYnjcddNVBNXnEMTCjbw&s" alt="Pinky">
+                    <h3>Pinky</h3>
+                    <p><strong>Age:</strong> 1.5 Years</p>
+                    <p><strong>Location:</strong> Mumbai</p>
+                    <p><strong>Reason:</strong> Left tied near garbage bin</p>
+                    <button onclick="showAdoptionRequestForm('Pinky')">Adopt Me</button>
+                </div>
+                <div class="pet-card">
+                    <img src="https://assets3.thrillist.com/v1/image/2765869/720x960/scale;webp=auto;jpeg_quality=60.jpg" alt="Chikki">
+                    <h3>Chikki</h3>
+                    <p><strong>Age:</strong> 2 Years</p>
+                    <p><strong>Location:</strong> Visakhapatnam</p>
+                    <p><strong>Reason:</strong> Separated from stray family</p>
+                    <button onclick="showAdoptionRequestForm('Chikki')">Adopt Me</button>
+                </div>
+                <div class="pet-card">
+                    <img src="https://static.independent.co.uk/s3fs-public/thumbnails/image/2020/07/30/10/dogrescuedhotcar.jpg?quality=75&width=640&crop=3%3A2%2Csmart&auto=webp" alt="Tuffy">
+                    <h3>Tuffy</h3>
+                    <p><strong>Age:</strong> 3.5 Years</p>
+                    <p><strong>Location:</strong> Old Delhi</p>
+                    <p><strong>Reason:</strong> Abandoned at temple</p>
+                    <button onclick="showAdoptionRequestForm('Tuffy')">Adopt Me</button>
+                </div>
+                <div class="pet-card">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWWpmm95a5rOx_G8PW5VqNWne_VUG0GvBKSw&s" alt="Lassi">
+                    <h3>Lassi</h3>
+                    <p><strong>Age:</strong> 4 Years</p>
+                    <p><strong>Location:</strong> Hyderabad outskirts</p>
+                    <p><strong>Reason:</strong> Owner moved to rented flat</p>
+                    <button onclick="showAdoptionRequestForm('Lassi')">Adopt Me</button>
+                </div>
+            </div>
+            <div class="nav-buttons">
+                <button onclick="showAdoptPage(2)">← Back</button>
+            </div>
+        </div>
+
+        <div id="adoptionRequestForm">
+            <div class="form-container">
+                <h2 id="adoptionFormHeading">Adoption Request</h2>
+                <form onsubmit="handleAdoptionRequestSubmit(event)">
+                    <input type="hidden" id="adoptingPetName" name="adoptingPetName">
+
+                    <label for="adopterName">Your Full Name:</label>
+                    <input type="text" id="adopterName" name="adopterName" required>
+
+                    <label for="adopterEmail">Your Email:</label>
+                    <input type="email" id="adopterEmail" name="adopterEmail" required>
+
+                    <label for="adopterPhone">Your Phone Number:</label>
+                    <input type="text" id="adopterPhone" name="adopterPhone" required>
+
+                    <label for="adopterAddress">Your Full Address:</label>
+                    <textarea id="adopterAddress" name="adopterAddress" rows="3" required></textarea>
+
+                    <label for="adoptionReason">Reason for Adoption:</label>
+                    <textarea id="adoptionReason" name="adoptionReason" rows="4" placeholder="Tell us why you want to adopt this pet." required></textarea>
+
+                    <button type="submit">Submit Adoption Request</button>
+                    <button type="button" class="back-to-pets-btn" onclick="closeAdoptionRequestForm()">Cancel & Back to Pets</button>
+                </form>
+                <div id="adoptionResult" style="margin-top: 20px; color: green; font-weight: bold;"></div>
+            </div>
+        </div>
+
+    </section>
+
+    <section class="track-section" id="trackSection">
+        <button class="back-btn" onclick="showPage('dashboard')">← Back</button>
+        <h1>Missing Pet Center 🐾</h1>
+
+        <div class="tabs track-tabs">
+            <div class="tab active" onclick="switchTrackTab('trackForm')">Track a Pet</div>
+            <div class="tab" onclick="switchTrackTab('trackedList')">Tracked Pet Details</div>
+        </div>
+
+        <div class="track-form-content active" id="trackFormContent">
+            <div class="track-container">
+                <h2>Submit Missing Pet Details</h2>
+                <form class="track-form" onsubmit="handleTrackSubmit(event);">
+                    <label for="petName">Pet's Name:</label>
+                    <input type="text" id="petName" name="petName" placeholder="e.g., Buddy" required />
+
+                    <label for="petAge">Approximate Age (Years):</label>
+                    <input type="number" id="petAge" name="petAge" min="0" placeholder="e.g., 2" />
+
+                    <label for="petBreed">Breed (if known):</label>
+                    <input type="text" id="petBreed" name="petBreed" placeholder="e.g., Golden Retriever, Mongrel" />
+
+                    <label for="lastSeenLocation">Last Seen Location:</label>
+                    <input type="text" id="lastSeenLocation" name="lastSeenLocation" placeholder="e.g., Near City Park" required />
+
+                    <label for="state">State:</label>
+                    <select id="state" name="state" required>
+                        <option value="">Select State</option>
+                        <option value="Andhra Pradesh">Andhra Pradesh</option>
+                        <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                        <option value="Assam">Assam</option>
+                        <option value="Bihar">Bihar</option>
+                        <option value="Chhattisgarh">Chhattisgarh</option>
+                        <option value="Goa">Goa</option>
+                        <option value="Gujarat">Gujarat</option>
+                        <option value="Haryana">Haryana</option>
+                        <option value="Himachal Pradesh">Himachal Pradesh</option>
+                        <option value="Jharkhand">Jharkhand</option>
+                        <option value="Karnataka">Karnataka</option>
+                        <option value="Kerala">Kerala</option>
+                        <option value="Madhya Pradesh">Madhya Pradesh</option>
+                        <option value="Maharashtra">Maharashtra</option>
+                        <option value="Manipur">Manipur</option>
+                        <option value="Meghalaya">Meghalaya</option>
+                        <option value="Mizoram">Mizoram</option>
+                        <option value="Nagaland">Nagaland</option>
+                        <option value="Odisha">Odisha</option>
+                        <option value="Punjab">Punjab</option>
+                        <option value="Rajasthan">Rajasthan</option>
+                        <option value="Sikkim">Sikkim</option>
+                        <option value="Tamil Nadu">Tamil Nadu</option>
+                        <option value="Telangana">Telangana</option>
+                        <option value="Tripura">Tripura</option>
+                        <option value="Uttar Pradesh">Uttar Pradesh</option>
+                        <option value="Uttarakhand">Uttarakhand</option>
+                        <option value="West Bengal">West Bengal</option>
+                    </select>
+
+                    <label for="healthStatus">Health Status/Description:</label>
+                    <textarea id="healthStatus" name="healthStatus" placeholder="e.g., Limping on front left paw, friendly, has a red collar"></textarea>
+
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="inShelter" name="inShelter" value="yes">
+                        <label for="inShelter">Is the pet currently in a shelter?</label>
+                    </div>
+
+                    <label for="contactEmail">Your Contact Email:</label>
+                    <input type="email" id="contactEmail" name="contactEmail" placeholder="your@example.com" required />
+
+                    <button type="submit">Submit Tracking Details</button>
+                </form>
+                <div id="submissionResult" style="margin-top: 20px; color: green; font-weight: bold;"></div>
+            </div>
+        </div>
+
+        <div class="tracked-list-content" id="trackedListContent">
+            <h2 style="margin-bottom: 20px;">Your Tracked Pets</h2>
+            <div class="tracked-pets-list-cards" id="trackedPetsListCards">
+                <p id="noTrackedPetsMessage" style="width: 100%; text-align: center; color: #666;">No pets tracked yet.</p>
+            </div>
+        </div>
+
+        <div id="thankYouMessage">
+            <p class="emoji">🎉</p>
+            <p>Thank You!</p>
+            <p>Your pet tracking details have been submitted successfully!</p>
+            <p>We'll be in touch shortly!</p>
+        </div>
+
+    </section>
+
+    <section class="profile-section" id="profileSection">
+        <button class="back-btn" onclick="showPage('dashboard')">← Back to Dashboard</button>
+        <h1>Your Profile 👤</h1>
+        <div id="profileContent">
+            </div>
+    </section>
+
+    <section class="pets-section" id="petsSection">
+        <button class="back-btn" onclick="showPage('dashboard')">← Back to Dashboard</button>
+        <h1>All Pets 🐾</h1>
+        <p>This section could display a comprehensive list of all pets, both for adoption and potentially those being tracked.</p>
+        <p>It's a placeholder for future expansion!</p>
+    </section>
+
+    <section class="admin-section" id="adminSection">
+        <button class="back-btn" onclick="showPage('dashboard')">← Back to Dashboard</button>
+        <h1>Admin Panel 🛠️</h1>
+        <p>This section is for administrative tasks.</p>
+        <ul>
+            <li>Managing pet listings</li>
+            <li>Reviewing adoption requests</li>
+            <li>User management</li>
+        </ul>
+    </section>
+
+    <section class="map-section" id="mapSection" style="display: none;">
+        <div class="header-map">
+            <button class="back-btn" onclick="showPage('dashboard')">← Back to Dashboard</button>
+            <h1>Find Pets on Map 🗺️</h1>
+            <div></div>
+        </div>
+
+        <div class="map-container">
+            <div id="map"></div>
+            <div class="search-container">
+                <input type="text" id="search-input" placeholder="Search for a location or address...">
+                <button id="search-button">Search</button>
+            </div>
+            <div id="map-status"></div>
+        </div>
+    </section>
+
+    <script src="js/script.js"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY"></script>
+
+</body>
+</html>
