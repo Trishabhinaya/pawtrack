@@ -1,0 +1,251 @@
+// Global variables
+let currentUser = null; // Stores the email of the logged-in user
+let trackedPets = []; // Array to store tracked pets for the current session
+
+// --- Event Listeners ---
+document.addEventListener('DOMContentLoaded', () => {
+    // Attach login/signup form handlers
+    document.getElementById('loginForm').addEventListener('submit', handleLogin);
+    document.getElementById('signupForm').addEventListener('submit', handleLogin);
+});
+
+// --- User Authentication and Profile Functions ---
+
+/**
+ * Handles both login and signup form submissions.
+ */
+function handleLogin(event) {
+    event.preventDefault(); // Prevent page reload
+    const form = event.target;
+    const emailInput = form.querySelector('input[type="email"]');
+
+    if (emailInput && emailInput.value) {
+        currentUser = emailInput.value; // Set the current user's email
+        console.log(`User logged in: ${currentUser}`);
+        updateNavForLogin(); // Change nav button to "LOGOUT"
+        showPage('dashboard'); // Navigate to the dashboard
+        form.reset(); // Clear the form
+    } else {
+        alert('An email address is required to log in or sign up.');
+    }
+}
+
+/**
+ * Logs the user out, clears their session, and updates the UI.
+ */
+function handleLogout() {
+    console.log(`User logged out: ${currentUser}`);
+    currentUser = null; // Clear the current user
+    updateNavForLogout(); // Change nav button back to "LOGIN"
+    showPage('loginSection'); // Go back to the login page
+}
+
+/**
+ * Updates the navigation bar to show a "LOGOUT" button.
+ */
+function updateNavForLogin() {
+    const navLoginButton = document.getElementById('navLoginButton');
+    if (navLoginButton) {
+        navLoginButton.textContent = 'LOGOUT';
+        navLoginButton.setAttribute('onclick', 'handleLogout()');
+    }
+}
+
+/**
+ * Updates the navigation bar to show a "LOGIN" button.
+ */
+function updateNavForLogout() {
+    const navLoginButton = document.getElementById('navLoginButton');
+    if (navLoginButton) {
+        navLoginButton.textContent = 'LOGIN';
+        navLoginButton.setAttribute('onclick', "showPage('loginSection')");
+    }
+}
+
+/**
+ * Dynamically populates the profile page with user data.
+ */
+function updateProfilePage() {
+    const profileContent = document.getElementById('profileContent');
+    if (currentUser) {
+        // If a user is logged in, show their details
+        profileContent.innerHTML = `
+            <p>Welcome back!</p>
+            <p><strong>Logged in as:</strong> ${currentUser}</p>
+            <p>Here you can manage your tracked pets and view your adoption requests.</p>
+        `;
+    } else {
+        // If no user is logged in, show a prompt
+        profileContent.innerHTML = `
+            <p>You are not logged in.</p>
+            <p>Please log in to view your profile information.</p>
+            <button onclick="showPage('loginSection')">Go to Login</button>
+        `;
+    }
+}
+
+
+// --- Page Navigation and UI Functions ---
+
+/**
+ * Main function to switch between different sections/pages.
+ */
+function showPage(id) {
+    // Hide all sections first
+    document.querySelectorAll('section').forEach(sec => sec.classList.remove('active'));
+
+    // Show the requested section
+    const pageToShow = document.getElementById(id);
+    if (pageToShow) {
+        pageToShow.classList.add('active');
+    }
+
+    // Close the side navigation if it's open
+    const sideNav = document.getElementById('sideNav');
+    const overlay = document.getElementById('overlay');
+    if (sideNav.classList.contains('active')) {
+        sideNav.classList.remove('active');
+        overlay.classList.remove('active');
+    }
+
+    // Special handling for pages that need dynamic content
+    if (id === 'profileSection') {
+        updateProfilePage(); // Update the profile page content
+    }
+    if (id === 'trackSection') {
+        switchTrackTab('trackForm'); // Default to 'Track a Pet' tab
+    }
+}
+
+/**
+ * Toggles the side navigation menu.
+ */
+function toggleSideNav() {
+    const sideNav = document.getElementById('sideNav');
+    const overlay = document.getElementById('overlay');
+    sideNav.classList.toggle('active');
+    overlay.classList.toggle('active');
+}
+
+/**
+ * Switches between Login and Signup tabs.
+ */
+function switchTab(tab) {
+    document.querySelectorAll(".tabs:not(.track-tabs) .tab").forEach(t => t.classList.remove("active"));
+    document.querySelectorAll(".login-section form").forEach(f => f.classList.remove("active"));
+    if (tab === "login") {
+        document.querySelector(".tabs:not(.track-tabs) .tab:nth-child(1)").classList.add("active");
+        document.getElementById("loginForm").classList.add("active");
+    } else {
+        document.querySelector(".tabs:not(.track-tabs) .tab:nth-child(2)").classList.add("active");
+        document.getElementById("signupForm").classList.add("active");
+    }
+}
+
+// --- Adoption Section Functions ---
+
+function showAdoptPage(pageNum) {
+    document.querySelectorAll('.adopt-section .page').forEach(p => p.classList.remove('active'));
+    document.getElementById('adoptionRequestForm').classList.remove('active');
+    document.getElementById('adoptPage' + pageNum).classList.add('active');
+}
+
+function showAdoptionRequestForm(petName) {
+    document.querySelectorAll('.adopt-section .page').forEach(p => p.classList.remove('active'));
+    const adoptionForm = document.getElementById('adoptionRequestForm');
+    adoptionForm.classList.add('active');
+    document.getElementById('adoptionFormHeading').innerText = `Adoption Request for ${petName}`;
+    document.getElementById('adoptingPetName').value = petName;
+    document.getElementById('adoptionResult').innerHTML = '';
+}
+
+function closeAdoptionRequestForm() {
+    document.getElementById('adoptionRequestForm').classList.remove('active');
+    document.getElementById('adoptPage1').classList.add('active');
+    document.getElementById('adoptionRequestForm').querySelector('form').reset();
+}
+
+function handleAdoptionRequestSubmit(event) {
+    event.preventDefault();
+    const petName = document.getElementById('adoptingPetName').value;
+    const adopterName = document.getElementById('adopterName').value;
+    const adopterEmail = document.getElementById('adopterEmail').value;
+    console.log(`Adoption request for ${petName} from ${adopterName} (${adopterEmail}) submitted.`);
+    const adoptionResultDiv = document.getElementById('adoptionResult');
+    adoptionResultDiv.innerHTML = `Thank you, ${adopterName}! Your request to adopt <strong>${petName}</strong> has been submitted.`;
+    adoptionResultDiv.style.color = 'green';
+    event.target.reset();
+    setTimeout(closeAdoptionRequestForm, 3000);
+}
+
+// --- Tracking Section Functions ---
+
+function switchTrackTab(tabName) {
+    document.querySelectorAll(".track-tabs .tab").forEach(t => t.classList.remove("active"));
+    document.querySelectorAll("#trackSection > div[id$='Content']").forEach(content => content.classList.remove("active"));
+    if (tabName === "trackForm") {
+        document.querySelector(".track-tabs .tab:nth-child(1)").classList.add("active");
+        document.getElementById("trackFormContent").classList.add("active");
+        document.getElementById('submissionResult').innerHTML = '';
+    } else if (tabName === "trackedList") {
+        document.querySelector(".track-tabs .tab:nth-child(2)").classList.add("active");
+        document.getElementById("trackedListContent").classList.add("active");
+        displayTrackedPets();
+    }
+}
+
+function handleTrackSubmit(event) {
+    event.preventDefault();
+    const petDetails = {
+        name: document.getElementById('petName').value,
+        age: document.getElementById('petAge').value,
+        breed: document.getElementById('petBreed').value,
+        location: document.getElementById('lastSeenLocation').value,
+        state: document.getElementById('state').value,
+        health: document.getElementById('healthStatus').value,
+        inShelter: document.getElementById('inShelter').checked ? 'Yes' : 'No',
+        contact: document.getElementById('contactEmail').value
+    };
+    trackedPets.push(petDetails);
+    console.log('Pet Tracking Submission:', petDetails);
+    document.getElementById('submissionResult').innerHTML = '';
+    const thankYouDiv = document.getElementById('thankYouMessage');
+    thankYouDiv.innerHTML = `<p class="emoji">🎉</p><p>Thank You!</p><p>Your tracking details for <strong>${petDetails.name || 'this pet'}</strong> have been submitted.</p>`;
+    thankYouDiv.classList.add('show');
+    event.target.reset();
+    setTimeout(() => {
+        thankYouDiv.classList.remove('show');
+        setTimeout(() => switchTrackTab('trackedList'), 500);
+    }, 2500);
+}
+
+function displayTrackedPets() {
+    const container = document.getElementById('trackedPetsListCards');
+    container.innerHTML = '';
+    if (trackedPets.length === 0) {
+        container.innerHTML = '<p id="noTrackedPetsMessage" style="width: 100%; text-align: center; color: #666;">No pets tracked yet.</p>';
+        return;
+    }
+    trackedPets.forEach((pet, index) => {
+        const petCard = document.createElement('div');
+        petCard.classList.add('tracked-pet-card');
+        petCard.innerHTML = `
+            <h3>${pet.name || 'Unknown Pet'}</h3>
+            <p><strong>Age:</strong> ${pet.age || 'N/A'} Years</p>
+            <p><strong>Breed:</strong> ${pet.breed || 'N/A'}</p>
+            <p><strong>Last Seen:</strong> ${pet.location || 'N/A'}, ${pet.state || 'N/A'}</p>
+            <p><strong>Health:</strong> ${pet.health || 'N/A'}</p>
+            <p><strong>In Shelter:</strong> ${pet.inShelter}</p>
+            <p><strong>Contact:</strong> ${pet.contact}</p>
+            <button class="found-button" onclick="markPetAsFound(${index})">Mark as Found</button>
+        `;
+        container.appendChild(petCard);
+    });
+}
+
+function markPetAsFound(index) {
+    if (confirm("Are you sure this pet has been found? This will remove it from the list.")) {
+        trackedPets.splice(index, 1);
+        displayTrackedPets();
+    }
+}
