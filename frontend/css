@@ -1,0 +1,750 @@
+:root {
+    --bg: #E0E0E0; /* Light Gray background */
+    --text: #2e2e4d;
+    --primary: #87CEEB; /* Sky Blue */
+    --primary-dark: #6495ED; /* Cornflower Blue (darker Sky Blue) */
+    --nav-height: 60px; /* Height for the top area where hamburger will be */
+    --side-nav-width: 250px; /* Width of the side navigation */
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+    background-color: var(--bg);
+    /* Updated background image for paw prints - DARKER */
+    background-image: url('data:image/svg+xml,%3Csvg width="80" height="80" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg"%3E%3C!-- Main paw pad --%3E%3Cpath d="M40 70c-8 0-15-7-15-15s7-15 15-15 15 7 15 15-7 15-15 15z" fill="%23AAAAAA" fill-opacity="0.5"/%3E%3C!-- Toes --%3E%3Cpath d="M30 45a8 8 0 1016 0 8 8 0 00-16 0zM50 40a8 8 0 1016 0 8 8 0 00-16 0zM20 50a8 8 0 1016 0 8 8 0 00-16 0zM60 55a8 8 0 1016 0 8 8 0 00-16 0z" fill="%23AAAAAA" fill-opacity="0.5"/%3E%3C/svg%3E');
+    background-repeat: repeat; /* Repeat the pattern */
+    color: var(--text);
+    padding: 20px;
+    padding-top: var(--nav-height); /* Add padding to prevent content overlap with top bar */
+    overflow-x: hidden; /* Prevent horizontal scroll due to side nav transition */
+}
+
+/* Hamburger Icon */
+#hamburger {
+    position: fixed;
+    top: 15px;
+    left: 20px;
+    z-index: 1001; /* Above side nav */
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 30px;
+    height: 25px;
+    background: transparent;
+    border: none;
+    padding: 0;
+}
+
+#hamburger span {
+    display: block;
+    width: 100%;
+    height: 3px;
+    background-color: var(--primary); /* Color of the bars */
+    border-radius: 2px;
+    transition: all 0.3s ease-in-out;
+}
+
+/* Side Navigation Menu - Initially off-screen and hidden */
+#sideNav {
+    position: fixed;
+    top: 0;
+    left: -var(--side-nav-width); /* Initially off-screen to the left */
+    width: var(--side-nav-width);
+    height: 100%;
+    background-color: var(--primary);
+    box-shadow: 2px 0 10px rgba(0,0,0,0.3);
+    z-index: 1000;
+    transition: left 0.3s ease-in-out, visibility 0.3s ease-in-out; /* Add visibility to transition */
+    display: flex;
+    flex-direction: column;
+    padding-top: var(--nav-height); /* Space for top bar */
+    visibility: hidden; /* Start hidden */
+}
+
+#sideNav.active {
+    left: 0; /* Slide in when active */
+    visibility: visible; /* Become visible when active */
+}
+
+#sideNav button {
+    background: none;
+    color: white;
+    border: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2); /* Separator */
+    padding: 15px 20px;
+    text-align: left;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    width: 100%; /* Make buttons fill side nav width */
+    margin-top: 0; /* Override default button margin */
+    border-radius: 0; /* Remove rounded corners */
+}
+
+#sideNav button:last-child {
+    border-bottom: none; /* No border for the last button */
+}
+
+#sideNav button:hover {
+    background-color: var(--primary-dark);
+}
+
+#closeSideNav {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 1002; /* Above hamburger */
+    width: auto; /* Override default button width */
+    margin-top: 0; /* Override default button margin */
+}
+
+/* Overlay for when side nav is open - Initially hidden */
+#overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+    z-index: 999; /* Below side nav, above content */
+    opacity: 0;
+    pointer-events: none; /* Allow clicks to pass through when hidden */
+    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out; /* Add visibility to transition */
+    visibility: hidden; /* Start hidden */
+}
+
+#overlay.active {
+    opacity: 1;
+    pointer-events: auto; /* Block clicks when active */
+    visibility: visible; /* Become visible when active */
+}
+
+/* INTRO PAGE, LOGIN, DASHBOARD, ADOPT PAGE, TRACK PAGE, MAP PAGE, PROFILE PAGE, PETS PAGE, ADMIN PAGE */
+.intro, .login-section, .dashboard, .adopt-section, .track-section, .map-section, .profile-section, .pets-section, .admin-section {
+    display: none;
+    min-height: calc(100vh - var(--nav-height) - 40px); /* Adjust min-height for top bar */
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 20px;
+    box-sizing: border-box;
+    position: relative;
+}
+
+.intro.active, .login-section.active, .dashboard.active, .adopt-section.active, .track-section.active, .map-section.active, .profile-section.active, .pets-section.active, .admin-section.active {
+    display: flex;
+}
+
+.intro h1 {
+    font-size: 36px;
+    margin-bottom: 10px;
+}
+
+.intro p {
+    font-size: 18px;
+    max-width: 600px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.dog-img {
+    width: 250px;
+    margin: 20px 0;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.paw-button {
+    font-size: 28px;
+    padding: 14px 20px;
+    background-color: var(--primary);
+    color: white; /* This makes the paw symbol white */
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.paw-button:hover {
+    background-color: var(--primary-dark);
+}
+
+/* Button for Intro page - now uses paw-button style */
+.intro .paw-button {
+    font-size: 28px;
+    padding: 14px 20px;
+    background-color: var(--primary);
+    color: white; /* Ensures the paw symbol is white for the intro button */
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    margin-top: 30px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    width: auto;
+}
+.intro .paw-button:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-2px);
+}
+
+
+/* LOGIN SECTION Tabs */
+.login-container {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.tabs {
+    display: flex;
+    margin-bottom: 20px;
+    background: #e0dff0; /* Background for tab bar */
+    border-radius: 6px;
+}
+
+.tab {
+    flex: 1;
+    padding: 10px;
+    cursor: pointer;
+    color: var(--text);
+    border-radius: 6px;
+    text-align: center;
+    transition: background 0.3s ease;
+}
+
+.tab.active {
+    background: var(--primary);
+    color: white;
+}
+
+/* Forms within login/signup */
+.login-section form {
+    display: none;
+    flex-direction: column;
+}
+
+.login-section form.active {
+    display: flex;
+}
+
+/* General input styling for all forms */
+input[type="text"],
+input[type="number"],
+input[type="email"],
+input[type="password"],
+select,
+textarea {
+    margin: 10px 0;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    width: 100%;
+    font-size: 16px;
+}
+
+button {
+    background: var(--primary);
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    margin-top: 10px;
+    cursor: pointer;
+    width: 100%;
+    transition: background 0.3s ease;
+}
+
+button:hover {
+    background: var(--primary-dark);
+}
+
+/* BACK BUTTONS for all sections */
+.dashboard .back-btn,
+.adopt-section .back-btn,
+.track-section .back-btn,
+.map-section .back-btn,
+.profile-section .back-btn,
+.pets-section .back-btn, /* Added for new sections */
+.admin-section .back-btn { /* Added for new sections */
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: white;
+    color: var(--primary-dark);
+    border: 2px solid var(--primary-dark);
+    border-radius: 6px;
+    padding: 8px 15px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 10;
+    text-decoration: none;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+.dashboard .back-btn:hover,
+.adopt-section .back-btn:hover,
+.track-section .back-btn:hover,
+.map-section .back-btn:hover,
+.profile-section .back-btn:hover,
+.pets-section .back-btn:hover, /* Added for new sections */
+.admin-section .back-btn:hover { /* Added for new sections */
+    background: var(--primary-dark);
+    color: white;
+}
+
+.dashboard h1 {
+    margin-bottom: 30px;
+    font-size: 28px;
+}
+
+.options {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 30px;
+}
+
+.card {
+    background: white;
+    width: 260px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    padding: 30px 20px;
+    text-align: center;
+}
+
+.card h2 {
+    margin-bottom: 12px;
+}
+
+/* Adopt Me specific styles */
+.adopt-section header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 30px;
+    width: 100%;
+}
+.adopt-section header h2 {
+    margin: 0 auto;
+    text-align: center;
+}
+.pets-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+}
+.pet-card {
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    padding: 20px;
+    width: 260px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* To push button to bottom */
+}
+.pet-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 12px;
+}
+.pet-card button {
+    margin-top: auto; /* Push button to bottom */
+    background-color: #D6F5FF !important; /* Light Pastel Blue with !important */
+    color: var(--primary-dark) !important; /* Using dark purple text for contrast with !important */
+    font-weight: bold;
+}
+.pet-card button:hover {
+    background-color: #A0E0FF !important; /* Slightly darker light blue for hover with !important */
+}
+.nav-buttons {
+    text-align: center;
+    margin-top: 30px;
+}
+.nav-buttons button {
+    margin: 5px;
+    padding: 10px 18px;
+    background-color: var(--primary); /* Changed to use primary sky blue */
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+}
+.nav-buttons button:hover {
+    background-color: var(--primary-dark); /* Changed to use darker primary sky blue */
+}
+.adopt-section .page {
+    display: none;
+    flex-direction: column; /* To center content within the page */
+    align-items: center;
+    width: 100%;
+}
+.adopt-section .page.active {
+    display: flex;
+}
+
+/* Adoption Request Form Styles */
+#adoptionRequestForm {
+    display: none; /* Hidden by default */
+    position: absolute; /* positioned relative to adopt-section */
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: 100%; /* Cover the whole section */
+    background: rgba(255, 255, 255, 0.95); /* Semi-transparent white background */
+    z-index: 20; /* Above other content in adopt section */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
+}
+#adoptionRequestForm.active {
+    display: flex;
+}
+
+#adoptionRequestForm .form-container {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 500px;
+    text-align: center;
+}
+
+#adoptionRequestForm h2 {
+    margin-bottom: 25px;
+    color: var(--primary-dark);
+}
+#adoptionRequestForm form {
+    display: flex;
+    flex-direction: column;
+}
+#adoptionRequestForm form label {
+    display: block;
+    text-align: left;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: var(--text);
+}
+#adoptionRequestForm .back-to-pets-btn {
+    background-color: #ccc;
+    color: var(--text);
+    margin-top: 20px;
+}
+#adoptionRequestForm .back-to-pets-btn:hover {
+    background-color: #bbb;
+}
+
+/* Track Me specific styles */
+.track-section h1 {
+    margin-bottom: 20px;
+    color: var(--primary-dark);
+    text-align: center;
+}
+
+.track-tabs {
+    margin-bottom: 30px;
+    width: 100%;
+    max-width: 500px;
+}
+
+.track-form-content, .tracked-list-content {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 700px;
+}
+
+.track-form-content.active, .tracked-list-content.active {
+    display: flex;
+}
+
+.track-container {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 500px;
+    text-align: center;
+}
+
+.track-container h2 {
+    margin-bottom: 25px;
+    color: var(--primary-dark);
+}
+
+.track-form label {
+    display: block;
+    text-align: left;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: var(--text);
+}
+
+.track-form textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.track-form .checkbox-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    justify-content: flex-start;
+}
+
+.track-form .checkbox-group input[type="checkbox"] {
+    margin-right: 10px;
+    width: auto;
+}
+
+.track-form .checkbox-group label {
+    margin-bottom: 0;
+    font-weight: normal;
+}
+
+/* Tracked Pets List styles (within tracked-list-content) */
+.tracked-pets-list-cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    width: 100%;
+    padding-top: 10px;
+}
+
+.tracked-pets-list-content h2 {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 20px;
+    color: var(--primary-dark);
+}
+
+.tracked-pet-card {
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    padding: 20px;
+    width: 280px;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.tracked-pet-card h3 {
+    margin-bottom: 10px;
+    color: var(--primary);
+    text-align: center;
+}
+
+.tracked-pet-card p {
+    font-size: 15px;
+    line-height: 1.4;
+}
+.tracked-pet-card p strong {
+    color: var(--primary-dark);
+}
+
+.tracked-pet-card .found-button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 12px;
+    margin-top: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.tracked-pet-card .found-button:hover {
+    background-color: #218838;
+}
+
+/* Thank You Message Styling (for track section) */
+#thankYouMessage {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: var(--primary-dark); /* Changed to use darker sky blue */
+    color: white;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    z-index: 100;
+    display: none;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+    max-width: 80%;
+}
+
+#thankYouMessage.show {
+    opacity: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#thankYouMessage p {
+    margin: 10px 0;
+}
+
+#thankYouMessage .emoji {
+    font-size: 40px;
+    margin-bottom: 15px;
+}
+
+/* Profile Section styling */
+.profile-section #profileContent {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 500px;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.profile-section #profileContent p {
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 10px;
+}
+
+.profile-section #profileContent button {
+    max-width: 200px;
+    margin: 10px auto 0;
+}
+
+
+/* Google Maps Section Styles (integrated) */
+/* This section is now removed from the HTML, but keeping its CSS for reference if it were to be re-added */
+.map-section {
+    display: none; /* Ensure it's hidden as the button is removed */
+    flex-direction: column;
+    height: 100vh;
+    padding: 0;
+    overflow: hidden;
+}
+.map-section .header-map {
+    padding: 15px 20px;
+    background-color: var(--primary);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    z-index: 10;
+    width: 100%;
+    position: relative;
+}
+
+.map-section .header-map h1 {
+    margin: 0 auto;
+    font-size: 24px;
+}
+
+.map-section .back-btn {
+    position: absolute;
+    top: 50%;
+    left: 20px;
+    transform: translateY(-50%);
+}
+
+.map-container {
+    flex-grow: 1;
+    position: relative;
+    width: 100%;
+}
+
+#map {
+    height: 100%;
+    width: 100%;
+}
+
+.search-container {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 5;
+    background-color: white;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    display: flex;
+    width: 90%;
+    max-width: 500px;
+}
+
+#search-input {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 16px;
+    outline: none;
+}
+
+#search-button {
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 6px;
+    margin-left: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+#search-button:hover {
+    background-color: var(--primary-dark);
+}
+
+#map-status {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 10px 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    font-size: 14px;
+    color: #333;
+    z-index: 5;
+    display: none;
+}
